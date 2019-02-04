@@ -7,15 +7,19 @@ public class PlayerController : MonoBehaviour {
 
     public float speed;//Public variable allows you to make changes in the unity editor.
     public Text countText;
+    public Text scoreText;
     public Text winText;
     private Rigidbody rb;
-    private int count;
+    private int count, lives, score;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         count = 0;
+        score = 0;
+        lives = 3;
         SetCountText();
+        SetScoreText();
         winText.text = "";
 
     }
@@ -35,19 +39,49 @@ public class PlayerController : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)//picking object
     {
+        
+
         if (other.gameObject.CompareTag("Pick Up"))
         {
             other.gameObject.SetActive(false);
             count++;
+            score++;
             SetCountText();
+            SetScoreText();
         }
-    }
+        else if (other.gameObject.CompareTag("Enemy"))
+        {
+            other.gameObject.SetActive(false);
+            lives--;
+            SetCountText();
+            SetScoreText();
+        }
+        
 
-    void SetCountText()
-    {
-        countText.text = "Count: " + count.ToString();
-        if (count >= 12)
-            winText.text = "You Win!";
     }
    
+        
+    void SetCountText()
+    {
+        if (score == 12)
+        {
+            transform.position = new Vector3(110.0f, transform.position.y, 0.0f);
+            score = 14;
+        }
+            
+
+        countText.text = "Total Pickups: " + count.ToString();
+        if(count==14)
+            winText.text = "You Win!";
+    }
+    void SetScoreText()
+    {
+        scoreText.text = "Lives: " + lives.ToString();
+        if (lives < 1)
+        {
+            Destroy(this);
+            winText.text = "Game Over";
+        }
+    }
+  
 }

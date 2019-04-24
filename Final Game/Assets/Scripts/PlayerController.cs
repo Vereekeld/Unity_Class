@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     public Text healthText;
     public Text scoreText;
     public Text winText;
+    public Text controlText;
     public int health;
     Animator anim;
 
@@ -35,8 +36,7 @@ public class PlayerController : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         psr = GetComponent<SpriteRenderer>();
-        musicSource.clip = Lvlm;
-        musicSource.Play();
+        
         SetScoreText();
         SetHealthText();
         winText.text = "";
@@ -51,6 +51,10 @@ public class PlayerController : MonoBehaviour
         SetHealthText();
         SetWinText();
 
+        if (Input.anyKey)
+        {
+            controlText.text = "";
+        }
         if (Input.GetKeyDown(KeyCode.D))
         {
             psr.flipX = false;
@@ -69,8 +73,9 @@ public class PlayerController : MonoBehaviour
         {
             anim.SetInteger("State", 0);
         }
-        
-        
+        if (Input.GetKey("escape"))
+            Application.Quit();
+
 
     }
     
